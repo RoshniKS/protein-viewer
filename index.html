@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="Explore protein structures from the RCSB Protein Data Bank.">
+  <meta name="description" content="Explore protein structures from the RCSB Protein Data Bank">
   <title>PROTEIN VIEWER</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./vendor/3Dmol-min.js"></script>
@@ -16,8 +16,8 @@
   <main id="panel" class="search-mode">
     <div id="panel-content">
       <header class="search-heading">
-        <h1>PROTEIN VIEWER</h1>
-        <p>Explore a protein structure from the RCSB Protein Data Bank.</p>
+        <h1><span>PROTEIN VIEWER</span></h1>
+        <p>Explore a protein structure from the RCSB Protein Data Bank</p>
       </header>
 
       <form id="search-form" autocomplete="off">
@@ -26,9 +26,13 @@
           <input id="pdb-id" name="pdb-id" type="text" maxlength="4"
                  pattern="[A-Za-z0-9]{4}" placeholder="e.g. 4HHB"
                  aria-describedby="search-help" required>
-          <button id="search-button" type="submit">Search</button>
+          <button id="search-button" type="submit" aria-label="Search" title="Search">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M14 2h4v9h-4zM7 9h11v3H7zM5 6h4v3H5zM2 9h6v3H2zM5 12h4v3H5z"/>
+            </svg>
+          </button>
         </div>
-        <div id="search-help" class="hint">Enter a four-character PDB code.</div>
+        <div id="search-help" class="hint">Enter a four-character PDB code</div>
       </form>
       <p id="status" role="status" aria-live="polite"></p>
 
@@ -60,10 +64,10 @@
         <div id="legend"></div>
         <div class="hint">
           <strong>Drag</strong> = rotate · <strong>Scroll</strong> = zoom ·
-          <strong>Right-drag / Ctrl-drag</strong> = move.<br>
-          <strong>Ctrl + scroll</strong> or <strong>two-finger twist</strong> = rotate around the view axis.<br>
-          <strong>Hover</strong> over the protein to see the residue.<br>
-          <strong>Drag</strong> the panel's lower-right corner to resize it.
+          <strong>Right-drag / Ctrl-drag</strong> = move<br>
+          <strong>Ctrl + scroll</strong> or <strong>two-finger twist</strong> = rotate around the view axis<br>
+          <strong>Hover</strong> over the protein to see the residue<br>
+          <strong>Drag</strong> the panel's lower-right corner to resize it
         </div>
       </section>
     </div>

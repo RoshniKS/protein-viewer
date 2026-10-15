@@ -137,3 +137,5 @@
   #panel.search-mode .search-heading p,
   #panel.search-mode #search-form { opacity: 1; transform: none; visibility: visible; }
 }
+
+#panel.search-mode { min-height: 0; padding: 0 0 4px; }

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Explore protein structures from the RCSB Protein Data Bank.">
+  <title>PROTEIN VIEWER</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./vendor/3Dmol-min.js"></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div id="viewer" aria-label="Interactive 3D protein structure"></div>
+
+  <main id="panel" class="search-mode">
+    <div id="panel-content">
+      <header class="search-heading">
+        <h1>PROTEIN VIEWER</h1>
+        <p>Explore a protein structure from the RCSB Protein Data Bank.</p>
+      </header>
+
+      <form id="search-form" autocomplete="off">
+        <label for="pdb-id">PDB code</label>
+        <div class="search-row">
+          <input id="pdb-id" name="pdb-id" type="text" maxlength="4"
+                 pattern="[A-Za-z0-9]{4}" placeholder="e.g. 4HHB"
+                 aria-describedby="search-help" required>
+          <button id="search-button" type="submit">Search</button>
+        </div>
+        <div id="search-help" class="hint">Enter a four-character PDB code.</div>
+      </form>
+      <p id="status" role="status" aria-live="polite"></p>
+
+      <section id="viewer-controls" hidden>
+        <div class="protein-heading">
+          <h2 id="structure-title"></h2>
+          <p id="protein-name"></p>
+        </div>
+        <div class="row control-category" id="colorButtons">
+          <button class="color-choice" data-mode="chain" type="button">Subunits</button>
+          <button class="color-choice" data-mode="ss" type="button">Secondary structure</button>
+          <button class="color-choice" data-mode="rainbow" type="button">Rainbow (N→C)</button>
+        </div>
+        <div class="row control-category" id="styleButtons">
+          <button class="style-choice" data-style="cartoon" type="button">Cartoon</button>
+          <button class="style-choice" data-style="stick" type="button">Sticks</button>
+          <button class="style-choice" data-style="line" type="button">Lines</button>
+        </div>
+        <div class="control-category action-category">
+          <div class="row" id="displayButtons">
+            <button class="display-choice" id="spin" type="button">Spin</button>
+            <button class="display-choice active" id="ligands" type="button">Ligands</button>
+            <button class="display-choice" id="surface" type="button">Surface</button>
+          </div>
+          <div class="row reset-category">
+            <button id="reset" type="button">Reset view</button>
+          </div>
+        </div>
+        <div id="legend"></div>
+        <div class="hint">
+          <strong>Drag</strong> = rotate · <strong>Scroll</strong> = zoom ·
+          <strong>Right-drag / Ctrl-drag</strong> = move.<br>
+          <strong>Ctrl + scroll</strong> or <strong>two-finger twist</strong> = rotate around the view axis.<br>
+          <strong>Hover</strong> over the protein to see the residue.<br>
+          <strong>Drag</strong> the panel's lower-right corner to resize it.
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <button id="panel-hide" class="pixel-toggle viewer-only" type="button"
+          aria-label="Hide options panel" title="Hide options panel" hidden>
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path fill="currentColor" d="M2 1h4v4H2zM10 1h4v4h-4zM6 5h4v2H6zM5 7h2v2H5zM9 7h2v2H9zM2 11h4v4H2zM10 11h4v4h-4zM6 9h4v2H6z"/>
+    </svg>
+  </button>
+  <button id="panel-show" class="pixel-toggle viewer-only" type="button"
+          aria-label="Show options panel" title="Show options panel" hidden>
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path fill="currentColor" d="M1 3h14v3H1zM1 10h7v3H1z"/>
+    </svg>
+  </button>
+
+  <div id="orientation-indicator" aria-label="Orientation of the X, Y and Z axes" hidden>
+    <button id="axes-hide" class="pixel-toggle" type="button"
+            aria-label="Hide axes indicator" title="Hide axes indicator">
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path fill="currentColor" d="M2 1h4v4H2zM10 1h4v4h-4zM6 5h4v2H6zM5 7h2v2H5zM9 7h2v2H9zM2 11h4v4H2zM10 11h4v4h-4zM6 9h4v2H6z"/>
+      </svg>
+    </button>
+    <svg viewBox="-60 -60 120 120" role="img" aria-label="Rotating XYZ axis guide">
+      <g id="orientation-axes"></g>
+      <circle cx="0" cy="0" r="2.5" fill="#eee"></circle>
+    </svg>
+  </div>
+  <button id="axes-show" class="pixel-toggle viewer-only" type="button"
+          aria-label="Show axes indicator" title="Show axes indicator" hidden>
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <path fill="#ff5252" d="M9 9h2v2H9zM7 7h2v2H7zM5 5h2v2H5zM3 3h2v2H3zM11 11h2v2h-2zM13 13h2v2h-2zM15 15h2v2h-2z"/>
+      <path fill="#69f0ae" d="M9 7h2v2H9zM9 5h2v2H9zM9 3h2v2H9zM9 1h2v2H9zM9 11h2v2H9zM9 13h2v2H9zM9 15h2v2H9zM9 17h2v2H9z"/>
+      <path fill="#40c4ff" d="M11 9h2v2h-2zM13 9h2v2h-2zM15 9h2v2h-2zM17 9h2v2h-2zM7 9h2v2H7zM5 9h2v2H5zM3 9h2v2H3zM1 9h2v2H1z"/>
+    </svg>
+  </button>
+</body>
+</html>

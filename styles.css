@@ -1,0 +1,97 @@
+  html, body { margin: 0; height: 100%; background: #000; color: #eee;
+               font-family: system-ui, sans-serif; overflow: hidden; }
+  #viewer { position: absolute; inset: 0; }
+  #panel { position: absolute; top: 12px; left: 12px; z-index: 10; padding: 12px 14px;
+           box-sizing: border-box; width: 290px; min-width: 170px; min-height: 120px;
+           max-width: calc(100vw - 24px); max-height: calc(100vh - 24px);
+           resize: both; overflow: hidden; background: rgba(30,30,30,.88);
+           border: 1px solid #444; border-radius: 8px; font-size: 13px;
+           font-family: "Cascadia Code", "Consolas", monospace; letter-spacing: 0.02em; }
+  #panel-content { box-sizing: border-box; width: 100%; }
+  #panel h1 { font-size: 1.15em; margin: 0 0 0.6em; }
+  .protein-name { font-size: 0.75em; font-weight: normal; }
+  #panel .row { margin: 0.45em 0; display: flex; flex-wrap: wrap; gap: 0.45em; }
+  #panel .row button { flex: 1 1 35%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+  button { background: #2d2d2d; color: #eee; border: 1px solid #555; border-radius: 5px;
+           padding: 0.3em 0.7em;
+           cursor: pointer; font-size: 1em; font-family: inherit; letter-spacing: inherit; }
+  button:hover { background: #3c3c3c; }
+  .control-category { border-top: 1px solid rgba(210, 225, 230, 0.2);
+                      margin-top: 0.55em; padding-top: 0.55em; }
+  #colorButtons.control-category { border-top: 0; margin-top: 0.45em; padding-top: 0; }
+  .color-choice.active { background: rgba(0, 210, 220, 0.28); border: 2px solid #00d2dc; }
+  .style-choice.active { background: rgba(255, 181, 71, 0.24); border: 2px solid #ffb547; }
+  .display-choice.active { background: rgba(184, 148, 255, 0.24); border: 2px solid #b894ff; }
+  .display-choice:disabled { cursor: not-allowed; opacity: 0.65; }
+  .action-category { display: flex; align-items: stretch; gap: 0.55em; }
+  .action-category .row { flex: 1 1 auto; min-width: 0; margin: 0; }
+  .reset-category { flex: 0 0 auto !important; align-items: stretch; padding-left: 0.55em;
+                    border-left: 1px solid rgba(210, 225, 230, 0.2); }
+  #reset { color: #ffb0b0; background: rgba(255, 65, 80, 0.16); border-color: #e85b66; }
+  #reset:hover { background: rgba(255, 65, 80, 0.28); }
+  .legend-item { display: flex; align-items: center;
+                 gap: 0.45em; margin: 0.15em 0; }
+  .swatch { width: 0.9em; height: 0.9em;
+            border-radius: 3px; display: inline-block; flex: 0 0 auto; }
+  #legend { margin-top: 0.6em; }
+  .hint { color: #999;
+          font-size: clamp(9px, calc(var(--panel-font-size, 13px) * 0.5 + 4.5px), 11px);
+          margin-top: 0.6em; line-height: 1.4; }
+  .pixel-toggle { position: absolute; z-index: 21; display: grid; place-items: center;
+                  box-sizing: border-box; width: var(--panel-toggle-size, 24px);
+                  height: var(--panel-toggle-size, 24px); padding: 0;
+                  color: #8dfaff; background: rgba(12, 20, 24, 0.88);
+                  border: 1px solid #00d2dc; border-radius: 3px;
+                  image-rendering: pixelated; pointer-events: auto; cursor: pointer; }
+  .pixel-toggle:hover { background: rgba(0, 210, 220, 0.28); }
+  .pixel-toggle[hidden] { display: none; }
+  .pixel-toggle svg { display: block; width: 12px; height: 12px; margin: auto;
+                      flex: none; shape-rendering: crispEdges; }
+  #panel-hide, #panel-show { font-size: var(--panel-font-size, 13px); }
+  #panel-hide svg, #panel-show svg { width: 0.8em; height: 0.8em; }
+  #panel-hide { position: absolute; }
+  #panel-show { top: 12px; left: 12px; }
+  #orientation-indicator { position: absolute; right: 16px; bottom: 16px; z-index: 5;
+                           width: 80px; height: 80px; pointer-events: none; }
+  #orientation-indicator svg { width: 100%; height: 100%; overflow: visible; }
+  #axes-hide { top: -5px; right: -5px; width: 16px; height: 16px;
+               border-width: 1px; }
+  #axes-hide svg { width: 6px; height: 6px; }
+  #axes-show { right: 16px; bottom: 16px; }
+  #orientation-indicator line { stroke-linecap: round; }
+  #orientation-indicator text { font: bold 12px system-ui, sans-serif;
+                                text-anchor: middle; dominant-baseline: central; }
+  [hidden] { display: none !important; }
+  #viewer { touch-action: none; }
+  #panel { max-height: calc(100vh - 24px); overflow: hidden; }
+  #panel.search-mode { position: fixed; top: 50%; left: 50%; width: min(440px, calc(100vw - 32px));
+                       min-width: 0; max-height: calc(100vh - 32px); padding: 24px;
+                       transform: translate(-50%, -50%) scale(0.7); resize: none; }
+  #panel.search-mode #panel-content { width: 100%; }
+  #panel.search-mode .search-heading h1 { font-size: 1.55em; }
+  #panel.search-mode .search-heading p { font-size: 1em; }
+  .search-heading h1 { color: #8dfaff; margin-bottom: 0.35em; }
+  .search-heading p { color: #aaa; margin: 0 0 1em; line-height: 1.45; }
+  #search-form label { display: block; margin-bottom: 0.35em; color: #ccc; }
+  .search-row { display: flex; gap: 0.45em; }
+  #pdb-id { min-width: 0; flex: 1 1 auto; box-sizing: border-box; padding: 0.4em 0.55em;
+            color: #eee; background: #171a1b; border: 1px solid #555; border-radius: 5px;
+            font: inherit; text-transform: uppercase; }
+  #pdb-id:focus-visible, button:focus-visible { outline: 2px solid #00d2dc; outline-offset: 2px; }
+  #search-button { flex: 0 0 auto; color: #8dfaff; border-color: #00d2dc;
+                   background: rgba(0, 210, 220, 0.16); }
+  #search-button:hover { background: rgba(0, 210, 220, 0.3); }
+  #status { margin: 0.75em 0 0; color: #aaa; line-height: 1.45; }
+  #status[data-kind="error"] { color: #ff9292; }
+  #status[data-kind="success"] { color: #8dfaff; }
+  .protein-heading { margin-top: 0.9em; }
+  .protein-heading h2 { font-size: 1.08em; margin: 0; overflow-wrap: anywhere; }
+  .protein-heading p { color: #aaa; margin: 0.25em 0 0; font-size: 0.86em; }
+  #viewer-controls .control-category { margin-top: 0.55em; }
+  #viewer-controls .hint { margin-top: 0.7em; }
+  @media (max-width: 480px) {
+    #panel { width: min(290px, calc(100vw - 24px)); }
+    #panel.search-mode { width: calc(100vw - 32px); padding: 20px; }
+    #orientation-indicator { width: 64px; height: 64px; right: 10px; bottom: 10px; }
+    #axes-show { right: 10px; bottom: 10px; }
+  }

@@ -6,6 +6,10 @@ browser with 3Dmol.js. When the PDB file is unavailable, it prefers RCSB's biolo
 assembly mmCIF so the viewer shows the biological unit rather than repeated crystal
 copies. It has no application server, account system, or API key.
 
+## Live site
+
+<https://roshniks.github.io/protein-viewer/>
+
 ## Try it locally
 
 Open `index.html` in a browser while connected to the internet. If the browser blocks

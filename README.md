@@ -10,30 +10,6 @@ copies. It has no application server, account system, or API key.
 
 <https://roshniks.github.io/protein-viewer/>
 
-## Try it locally
-
-Open `index.html` in a browser while connected to the internet. If the browser blocks
-network requests from local files, serve this folder with a local static HTTP server
-instead.
-
-## Publish with GitHub Pages
-
-GitHub Pages is currently available at no charge for public repositories. No hosting
-provider can promise that its pricing or terms will remain unchanged forever.
-
-1. Create a **public** GitHub repository for the website.
-2. Upload the **contents of this folder** to the repository root. In particular,
-   `.github/workflows/pages.yml` must be at the repository path
-   `.github/workflows/pages.yml`, beside `index.html`.
-3. In the repository, open **Settings → Pages** and set the build source to
-   **GitHub Actions**.
-4. Push to the `main` branch, or run **Deploy website to GitHub Pages** from the
-   repository's **Actions** tab.
-5. When the deployment workflow finishes, its summary contains the public URL.
-
-To publish an update, commit and push the changed website files to `main`; GitHub
-Actions will deploy them. Visitors receive the updated site on their next refresh.
-
 The site source and bundled 3Dmol.js library are public. Protein structure data is
 downloaded from RCSB when a visitor searches. An internet connection is required.
 

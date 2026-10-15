@@ -68,7 +68,7 @@ function positionPanelHide() {
 }
 
 function fitPanelContent() {
-  if (panel.hidden) return;
+  if (panel.hidden || panel.classList.contains("search-mode")) return;
   const availableWidth = panel.clientWidth - 28;
   const availableHeight = panel.clientHeight - 24;
   let low = 6;

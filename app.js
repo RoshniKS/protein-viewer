@@ -202,7 +202,7 @@ async function fetchStructure(code) {
     return { text: await pdbResponse.text(), format: "pdb" };
   }
   if (pdbResponse.status !== 404) {
-    throw new Error(`RCSB returned HTTP ${pdbResponse.status} while fetching the PDB file.`);
+    throw new Error(`RCSB returned HTTP ${pdbResponse.status} while fetching the PDB file`);
   }
 
   const assemblyResponse = await fetch(`${baseUrl}-assembly1.cif`);
@@ -210,7 +210,7 @@ async function fetchStructure(code) {
     return { text: await assemblyResponse.text(), format: "cif" };
   }
   if (assemblyResponse.status !== 404) {
-    throw new Error(`RCSB returned HTTP ${assemblyResponse.status} while fetching the biological assembly.`);
+    throw new Error(`RCSB returned HTTP ${assemblyResponse.status} while fetching the biological assembly`);
   }
 
   const cifResponse = await fetch(`${baseUrl}.cif`);
@@ -218,9 +218,9 @@ async function fetchStructure(code) {
     return { text: await cifResponse.text(), format: "cif" };
   }
   if (cifResponse.status === 404) {
-    throw new Error(`No structure with PDB code ${code} was found.`);
+    throw new Error(`No structure with PDB code ${code} was found`);
   }
-  throw new Error(`RCSB returned HTTP ${cifResponse.status} while fetching the mmCIF file.`);
+  throw new Error(`RCSB returned HTTP ${cifResponse.status} while fetching the mmCIF file`);
 }
 
 function setActive(containerId, attribute, value) {
@@ -297,7 +297,7 @@ function updateStructureControls(atoms) {
   ligandsButton.textContent = ligandResidues.length ? "Ligands" : "Ligands: none";
   ligandsButton.title = ligandResidues.length
     ? ""
-    : "No non-water ligands found in this structure.";
+    : "No non-water ligands found in this structure";
   state.ligands = ligandResidues.length > 0;
   ligandsButton.classList.toggle("active", state.ligands);
 }
@@ -305,7 +305,7 @@ function updateStructureControls(atoms) {
 async function loadStructure(code) {
   const sequence = ++loadSequence;
   searchButton.disabled = true;
-  searchButton.textContent = "Loading…";
+  searchButton.setAttribute("aria-label", "Loading structure");   searchButton.setAttribute("aria-busy", "true");
   setStatus(`Looking up ${code} in RCSB…`);
 
   try {
@@ -318,7 +318,7 @@ async function loadStructure(code) {
     if (!atoms.length) {
       viewer.removeModel(model);
       model = null;
-      throw new Error(`RCSB returned a structure file with no readable atoms for ${code}.`);
+      throw new Error(`RCSB returned a structure file with no readable atoms for ${code}`);
     }
 
     updateStructureControls(atoms);
@@ -349,7 +349,7 @@ async function loadStructure(code) {
     orientationIndicator.hidden = false;
     $("panel-show").hidden = true;
     $("axes-show").hidden = true;
-    setStatus(`${code} loaded from RCSB.`, "success");
+    setStatus(`${code} loaded from RCSB`, "success");
     history.replaceState(null, "", `?pdb=${encodeURIComponent(code)}`);
     requestAnimationFrame(() => {
       viewer.resize();
@@ -358,13 +358,13 @@ async function loadStructure(code) {
   } catch (error) {
     if (sequence !== loadSequence) return;
     const message = error instanceof TypeError
-      ? "Could not connect to RCSB. Check your internet connection and try again."
+      ? "Could not connect to RCSB — check your internet connection and try again"
       : error.message;
     setStatus(message, "error");
   } finally {
     if (sequence === loadSequence) {
       searchButton.disabled = false;
-      searchButton.textContent = "Search";
+      searchButton.setAttribute("aria-label", "Search");       searchButton.removeAttribute("aria-busy");
     }
   }
 }
@@ -373,7 +373,7 @@ searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const code = searchInput.value.trim().toUpperCase();
   if (!/^[A-Z0-9]{4}$/.test(code)) {
-    setStatus("Enter a valid four-character PDB code, such as 4HHB.", "error");
+    setStatus("Enter a valid four-character PDB code, such as 4HHB", "error");
     searchInput.focus();
     return;
   }
